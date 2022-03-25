@@ -65,7 +65,10 @@ class PerfilController extends Controller
         return view('perfiles.show', compact('perfil', 'recetas'));
     }
 
+
+
     
+
 
     /**
      * Show the form for editing the specified resource.
