@@ -14,7 +14,7 @@ class UsuarioSeeder extends Seeder
      */
     public function run()
     {
-        //
+        
         $user = User::create([
             'name' => 'Daniel',
             'email' => 'correo@correo.com',
@@ -24,10 +24,6 @@ class UsuarioSeeder extends Seeder
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
 
-        $user->perfil()->create();
-
-
-
         $user2 = User::create([
             'name' => 'Luis',
             'email' => 'correo2@correo.com',
@@ -36,10 +32,6 @@ class UsuarioSeeder extends Seeder
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ]);
-
-        $user2->perfil()->create();
-
-
 
     }
 }

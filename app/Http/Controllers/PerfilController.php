@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Perfil;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use App\Receta;
 
 class PerfilController extends Controller
 {
@@ -56,8 +57,12 @@ class PerfilController extends Controller
      */
     public function show(Perfil $perfil)
     {
+
+        //Obtener las recetas con paginacion
+        $recetas = Receta::where('user_id', $perfil->user_id)->paginate(10);
+
         //
-        return view('perfiles.show', compact('perfil'));
+        return view('perfiles.show', compact('perfil', 'recetas'));
     }
 
     /**
@@ -68,11 +73,14 @@ class PerfilController extends Controller
      */
     public function edit(Perfil $perfil)
     {
+        //Ejecutar el Policy
+        $this->authorize('view', $perfil);
+
         //
         return view('perfiles.edit', compact('perfil'));
     }
 
-
+    
 
     /**
      * Update the specified resource in storage.

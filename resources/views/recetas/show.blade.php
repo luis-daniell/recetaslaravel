@@ -2,8 +2,6 @@
 
 @section('content')
 
-    {{-- <h1>{{ $receta }}</h1> --}}
-
     <article class="contenido-receta">
         <h1 class="text-center mb-4">{{$receta->titulo}}</h1>
 
@@ -30,16 +28,12 @@
                     $fecha=$receta->created_at
                 @endphp
                 <fecha-receta fecha="{{$fecha}}"></fecha-receta>
-
             </p>
-
-
 
 
             <div class="ingredientes">
                 <h2 class="my-3 text-primary">Ingredientes:</h2>
                 {!!$receta->ingredientes!!}
-
             </div>
 
             <div class="preparacion">
