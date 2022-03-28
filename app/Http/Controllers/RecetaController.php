@@ -12,7 +12,7 @@ class RecetaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'show']);
+        $this->middleware('auth', ['except' => ['show', 'search'] ]);
     }
     /**
      * Display a listing of the resource.
@@ -25,12 +25,17 @@ class RecetaController extends Controller
         //Auth::user()->recetas->dd();
         //$recetas = auth()->user()->recetas;
 
-        $usuario = auth()->user()->id;
+        $usuario = auth()->user();
+
+
+
 
         //Recetas con Paginacion
-        $recetas = Receta::where('user_id', $usuario)->paginate(10);
+        $recetas = Receta::where('user_id', $usuario->id)->paginate(10);
 
-        return view('recetas.index')->with('recetas', $recetas);
+        return view('recetas.index')
+            ->with('recetas', $recetas)
+            ->with('usuario', $usuario);
     }
 
     /**
@@ -113,11 +118,19 @@ class RecetaController extends Controller
      */
     public function show(Receta $receta)
     {
+
+        //Obtener si el usuario actual le gusta la receta y esta autenticado
+        $like = ( auth()->user()) ? auth()->user()->meGusta->contains($receta->id) :false;
+
+        //Pasa la cantidad de likes a la vista
+        $likes = $receta->likes->count();
+
+
         //Algunos metodos para obtener una receta
         //$receta = Receta::find($receta);
         //CON ESTE METODO NOS REGRESA UN ERROR
         //$receta = Receta::findOrFail($receta);
-        return view('recetas.show', compact('receta'));
+        return view('recetas.show', compact('receta', 'like', 'likes'));
 
     }
 
@@ -202,5 +215,20 @@ class RecetaController extends Controller
         //Eliminar la receta
         $receta->delete();
         return redirect()->action('RecetaController@index');
+    }
+
+
+    public function search(Request $request)
+    {
+        $busqueda =$request->get('buscar');
+        // $busqueda =$request['buscar'];
+
+
+        //Busca al inicio y al final de la cadena con el porcentaje
+        $recetas = Receta::where('titulo', 'like', '%' . $busqueda . '%')->paginate(1);
+
+        $recetas->appends(['buscar'=> $busqueda]);
+
+        return view('busquedas.show', compact('recetas', 'busqueda'));
     }
 }
