@@ -1,4 +1,0 @@
-This is a file to know if you save the changes in GitHub
-
-"25/03/2022 12:48 p.m."
-"27/03/2022 11:47 p.m."
